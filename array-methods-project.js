@@ -51,8 +51,64 @@ function displayAllTransactions(){
     });
 }
 
+/***************************************************************
+ * sortByDate works naturally with array.sort() function as the
+ * input parameter. The first inner-element of that array must be a type
+ * Date to read correctly. 
+ ***************************************************************/
+function sortByDate(a, b){
+    let yearA = a[0].getFullYear();
+    let yearB = b[0].getFullYear();
+    if (yearA === yearB){
+        let monthA = a[0].getMonth();
+        let monthB = b[0].getMonth();
+        if(monthA === monthB){
+            let dateA = a[0].getDate();
+            let dateB = b[0].getDate();
+            if (dateA === dateB){
+                return 0;
+            } else {
+                return dateB - dateA;
+            }
+        } else {
+            return monthB - monthA;
+        }
+    } else {
+        return yearB - yearA;
+    }
+    sortByDate.calledCount += 1;
+}
+
+sortByDate.calledCount = 0;
+
+/***************************************************************
+ * 
+ ***************************************************************/
+function sortByStore(){
+    let 
+}
+
+/***************************************************************
+ * 
+ ***************************************************************/
+function sortByHighPrice(a, b){
+    priceA = a[2];
+    priceB = b[2];
+    console.log(priceA);
+    console.log(priceB);
+    return priceB - priceA;
+}
+
+console.log('\n');
 displayAllTransactions();
 addAndDisplayNewTransaction(new Date(2018, 4, 13), "Rent", 300);
 addAndDisplayNewTransaction(new Date(2017, 10, 31), "Car Insurance", 80);
 addAndDisplayNewTransaction(new Date(2017, 7, 27), "Tuition", 2000);
-displaySpecificTransaction(0);
+addAndDisplayNewTransaction(new Date(2019, 7, 27), "Student Store", 20);
+//displaySpecificTransaction(0);
+
+console.log('\n');
+transactionHistory.sort(sortByDate).ghjk();
+displayAllTransactions();
+
+
