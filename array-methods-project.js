@@ -18,18 +18,7 @@ function printMonth(monthNumber){
  * your transaction history
  ***************************************************************/
 function displayTransaction(date, store, price){
-
     console.log("Date: " + date.getFullYear() + ' ' + printMonth(date.getMonth()) + ' ' + date.getDate() + " --- Store: " + store + " --- Price: " + price);
-}
-
-/***************************************************************
- * addAndDisplayNewTransaction() will push a new element to the
- * transactionHistory array, then will display that new element
- * from the array.
- ***************************************************************/
-function addAndDisplayNewTransaction(date, store, price){
-    let newLength = transactionHistory.push([date, store, price])-1;
-    displayTransaction(transactionHistory[newLength][0], transactionHistory[newLength][1], transactionHistory[newLength][2]);
 }
 
 /***************************************************************
@@ -40,6 +29,16 @@ function addAndDisplayNewTransaction(date, store, price){
 function displaySpecificTransaction(transactionNumber){
     let value = transactionHistory[transactionNumber];
     displayTransaction(value[0], value[1], value[2]);
+}
+
+/***************************************************************
+ * addAndDisplayNewTransaction() will push a new element to the
+ * transactionHistory array, then will display that new element
+ * from the array.
+ ***************************************************************/
+function addAndDisplayNewTransaction(date, store, price){
+    let newLength = transactionHistory.push([date, store, price])-1;
+    displaySpecificTransaction(newLength);
 }
 
 /***************************************************************
@@ -55,4 +54,5 @@ function displayAllTransactions(){
 displayAllTransactions();
 addAndDisplayNewTransaction(new Date(2018, 4, 13), "Rent", 300);
 addAndDisplayNewTransaction(new Date(2017, 10, 31), "Car Insurance", 80);
+addAndDisplayNewTransaction(new Date(2017, 7, 27), "Tuition", 2000);
 displaySpecificTransaction(0);
