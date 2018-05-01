@@ -1,4 +1,4 @@
-//console.log("Practical array.push(): Transaction History");
+//
 var transactionHistory = [
     [new Date(2018, 2, 28), "Walmart", 50],
     [new Date(2018, 3, 2), "Taco Bell", 10],
