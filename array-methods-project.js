@@ -4,7 +4,15 @@ var transactionHistory = [
     [new Date(2018, 3, 2), "Taco Bell", 10],
     [new Date(2018, 3, 30), "Fat Cats" , 25]
 ];
+
+var transactionHistory = [
+    [new Date(2018, 2, 28), "Walmart", 50],
+    [new Date(2018, 3, 2), "Taco Bell", 10],
+    [new Date(2018, 3, 30), "Fat Cats" , 25]
+];
+
 var deletedTransactions = [];
+var potentialFraud = [];
 
 /***************************************************************
  * Print months takes a number input between 0-11 and returns the month name in string.
@@ -29,7 +37,7 @@ function displayTransaction(date, store, price){
  * element in the array.
  ***************************************************************/
 function displaySpecificTransaction(transactionNumber = (transactionHistory.length-1)){
-    let value = transactionHistory[transactionNumber];
+    var value = transactionHistory[transactionNumber];
     displayTransaction(value[0], value[1], value[2]);
 }
 
@@ -39,7 +47,7 @@ function displaySpecificTransaction(transactionNumber = (transactionHistory.leng
  * It no longer displays the element by default.
  ***************************************************************/
 function addNewTransaction(date, store, price){
-    let newLength = transactionHistory.push([date, store, price])-1;
+    var newLength = transactionHistory.push([date, store, price])-1;/**************************************array.push*****/
     //displaySpecificTransaction(newLength);
 }
 
@@ -49,7 +57,7 @@ function addNewTransaction(date, store, price){
  ***************************************************************/
 function displayAllTransactions(array = transactionHistory){
     array.forEach(element => {
-        displayTransaction(element[0], element[1], element[2]);
+        displayTransaction(element[0], element[1], element[2]);/****************************************array.forEach*****/
     });
 }
 
@@ -102,34 +110,74 @@ function sortByHighPrice(a, b){
 }
 
 /**********************************************************************
- * Incomplete. Needs Testing
+ * undoRecentTransactions() takes an array input and an integer. 
+ * It organizes the given array by date, removes the first element in 
+ * given array and adds it to the recentlyDeleted[]. It then concatinates
+ * it to the global deletedTransactions[]. 
  **********************************************************************/
-function undoRecentTransactions(array, removeAmount){
+function undoRecentTransactions(array = transactionHistory, removeAmount){
     var recentlyDeleted = [];
-    array.sort(sortByDate);
+    array.sort(sortByDate);/*******************************************************************************array.sort*****/
     for(x = 0; x < removeAmount; x++){
-        recentlyDeleted.unshift(array.shift());
+        recentlyDeleted.push(array.shift());/*************************************************************array.shift*****/
     }
-    deletedTransactions = deletedTransactions.concat(recentlyDeleted);
+    deletedTransactions = deletedTransactions.concat(recentlyDeleted);/**********************************array.concat*****/
+    deletedTransactions.sort(sortByDate);
+}
+
+/**********************************************************************
+ * restoreRecentTransactions() resorts the deletedTransactions[] to get them
+ * in the correct order, then unshifts them to the transactionHistory[]
+ * to effectively restore all recent deletedTransactions[]. All data is
+ * then removed from deletedTransactions[];
+ **********************************************************************/
+function restoreRecentTransactions(){
+    // deletedTransactions is by default sorted with date most in the future first.
+    // so reordering the array in the reverse order (-1) will get the transactions
+    // in the correct transactionHistory.unshift order.
+    deletedTransactions.sort(-1);
+    deletedTransactions.forEach(deletedTransaction => transactionHistory.unshift(deletedTransaction) );/***array.unshift**/
+    deletedTransactions = [];
+}
+
+/**********************************************************************
+ * eraseDeletedTransactions() is a hard-coded function that perminately
+ * deletes and removes all data from the deletedTransactions[].
+ **********************************************************************/
+function eraseDeletedTransactions(){
+    deletedTransactions = [];
+}
+
+/**********************************************************************
+ * 
+ **********************************************************************/
+function detectFraudulentBehavior(){
+    var warningThreshold = 1500;
+    potentialFraud = (transactionHistory.filter(transaction => transaction[2] > warningThreshold));/*****array.filter*****/
 }
 
 console.log('\n');
-displayAllTransactions();
+//displayAllTransactions(); console.log('\n');
 addNewTransaction(new Date(2018, 4, 13), "Rent", 300);
 addNewTransaction(new Date(2017, 10, 31), "Car Insurance", 80);
 addNewTransaction(new Date(2017, 7, 27), "Tuition", 2000);
+addNewTransaction(new Date(2016, 8, 3), "School", 1800);
 addNewTransaction(new Date(2019, 7, 27), "Student Store", 20);
 //displaySpecificTransaction(0);
 
-//console.log('\n');
 transactionHistory.sort(sortByDate);
-displayAllTransactions();
+displayAllTransactions(); console.log('\n');
 
-//console.log('\n');
-transactionHistory.sort(sortByHighPrice);
+//transactionHistory.sort(sortByHighPrice);
 //displayAllTransactions();
 
-undoRecentTransactions(transactionHistory, 4);
-displayAllTransactions();
+undoRecentTransactions(transactionHistory, 2);
+undoRecentTransactions(transactionHistory, 2);
+displayAllTransactions(deletedTransactions); console.log('\n');
 
+restoreRecentTransactions();
+displayAllTransactions(); console.log('\n');
+
+detectFraudulentBehavior();
+displayAllTransactions(potentialFraud);
 
