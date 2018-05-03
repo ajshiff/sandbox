@@ -5,11 +5,11 @@ var transactionHistory = [
     [new Date(2018, 3, 30), "Fat Cats" , 25]
 ];
 
-var transactionHistory = [
+/*var transactionHistory = [
     [new Date(2018, 2, 28), "Walmart", 50],
     [new Date(2018, 3, 2), "Taco Bell", 10],
     [new Date(2018, 3, 30), "Fat Cats" , 25]
-];
+];*/
 
 var deletedTransactions = [];
 var potentialFraud = [];
@@ -149,11 +149,35 @@ function eraseDeletedTransactions(){
 }
 
 /**********************************************************************
- * 
+ * detectFraudulentBehavior() searches the transactionHistory[] for all 
+ * elememnts. It returns all elements that meet the criteria. As of right 
+ * now, the criteria for a transaction to be considered potentially 
+ * fraudulent is any charge that is over $1500.
  **********************************************************************/
 function detectFraudulentBehavior(){
     var warningThreshold = 1500;
     potentialFraud = (transactionHistory.filter(transaction => transaction[2] > warningThreshold));/*****array.filter*****/
+}
+
+/**********************************************************************
+ * isDateDataRealistic() compares the date data to the data data of right now.
+ * If all data from transactionHistory[] has happened before right now, 
+ * it returns true. Otherwise it returns false.
+ **********************************************************************/
+function isDateDataRealistic(){
+    var areDatesReal = transactionHistory.every(transaction => transaction[0] < new Date());/*************array.every*****/
+    return areDatesReal;
+}
+
+/**********************************************************************
+ * hasShoppedAtThisStore() takes a string as a parameter. That string is
+ * compared to the store name value of each transaction. It returns true
+ * if one or more element has a store name that matches exactly. 
+ * else return false.
+ **********************************************************************/
+function hasShoppedAtThisStore(storeName){
+    var hasShoppedHere = transactionHistory.some(transaction => transaction[1] === storeName);/************array.some*****/
+    return hasShoppedHere;
 }
 
 console.log('\n');
@@ -180,4 +204,7 @@ displayAllTransactions(); console.log('\n');
 
 detectFraudulentBehavior();
 displayAllTransactions(potentialFraud);
+
+console.log(isDateDataRealistic());
+console.log(hasShoppedAtThisStore("Walmart"));
 
