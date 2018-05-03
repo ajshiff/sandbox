@@ -13,6 +13,7 @@ var transactionHistory = [
 
 var deletedTransactions = [];
 var potentialFraud = [];
+var lowerCaseTransactions = [];
 
 /***************************************************************
  * Print months takes a number input between 0-11 and returns the month name in string.
@@ -42,6 +43,17 @@ function displaySpecificTransaction(transactionNumber = (transactionHistory.leng
 }
 
 /***************************************************************
+ * returnSpecificTransaction() grabs transaction info from the
+ * transactionHistory[] array with the coresponding element number
+ * and returns that specific transaction. Defaults to the last
+ * element in the array.
+ ***************************************************************/
+function returnSpecificTransaction(transactionNumber = (transactionHistory.length-1)){
+    var value = transactionHistory[transactionNumber];
+    return value;
+}
+
+/***************************************************************
  * addNewTransaction() replaced the old addAndDisplayNewTransaction().
  * addNewTransaction() adds a new element to the transactionHistory[].
  * It no longer displays the element by default.
@@ -56,8 +68,8 @@ function addNewTransaction(date, store, price){
  * array foreach element and displays them using displayTransaction()
  ***************************************************************/
 function displayAllTransactions(array = transactionHistory){
-    array.forEach(element => {
-        displayTransaction(element[0], element[1], element[2]);/****************************************array.forEach*****/
+    array.forEach(transaction => {
+        displayTransaction(transaction[0], transaction[1], transaction[2]);/****************************************array.forEach*****/
     });
 }
 
@@ -180,6 +192,16 @@ function hasShoppedAtThisStore(storeName){
     return hasShoppedHere;
 }
 
+function doesTransactionInclude(specificTransaction){
+    return transactionHistory.includes(specificTransaction, 0);/*******************************************array.some*****/
+}
+
+function storeNamesToLowerCase(){
+    for(i = 1; i < transactionHistory.length; i++){
+        lowerCaseTransactions.push(transactionHistory[i][1].toLowerCase);
+    }
+}
+
 console.log('\n');
 //displayAllTransactions(); console.log('\n');
 addNewTransaction(new Date(2018, 4, 13), "Rent", 300);
@@ -207,4 +229,4 @@ displayAllTransactions(potentialFraud);
 
 console.log(isDateDataRealistic());
 console.log(hasShoppedAtThisStore("Walmart"));
-
+console.log(doesTransactionInclude(returnSpecificTransaction(0)));
