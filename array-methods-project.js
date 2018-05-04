@@ -13,7 +13,6 @@ var transactionHistory = [
 
 var deletedTransactions = [];
 var potentialFraud = [];
-var lowerCaseTransactions = [];
 
 /***************************************************************
  * Print months takes a number input between 0-11 and returns the month name in string.
@@ -69,7 +68,7 @@ function addNewTransaction(date, store, price){
  ***************************************************************/
 function displayAllTransactions(array = transactionHistory){
     array.forEach(transaction => {
-        displayTransaction(transaction[0], transaction[1], transaction[2]);/****************************************array.forEach*****/
+        displayTransaction(transaction[0], transaction[1], transaction[2]);/****************************array.forEach*****/
     });
 }
 
@@ -145,9 +144,9 @@ function undoRecentTransactions(array = transactionHistory, removeAmount){
  **********************************************************************/
 function restoreRecentTransactions(){
     // deletedTransactions is by default sorted with date most in the future first.
-    // so reordering the array in the reverse order (-1) will get the transactions
+    // so reordering the array in the reverse order will get the transactions
     // in the correct transactionHistory.unshift order.
-    deletedTransactions.sort(-1);
+    deletedTransactions.reverse();///array.sort(-1) will achieve the same result./*************************array.reverse**/
     deletedTransactions.forEach(deletedTransaction => transactionHistory.unshift(deletedTransaction) );/***array.unshift**/
     deletedTransactions = [];
 }
@@ -192,13 +191,57 @@ function hasShoppedAtThisStore(storeName){
     return hasShoppedHere;
 }
 
+/**********************************************************************
+ * Takes an array as a parameter, ordered as follows: 
+ * [new Date(year, month, day), "Store Name", Dollar-Amount]
+ * and checks it against all elements in the transactionHistory[] to
+ * see if there are any exact matches.
+ **********************************************************************/
 function doesTransactionInclude(specificTransaction){
-    return transactionHistory.includes(specificTransaction, 0);/*******************************************array.some*****/
+    return transactionHistory.includes(specificTransaction);/******************************************array.includes*****/
 }
 
-function storeNamesToLowerCase(){
-    for(i = 1; i < transactionHistory.length; i++){
-        lowerCaseTransactions.push(transactionHistory[i][1].toLowerCase);
+/**********************************************************************
+ * fetchDollarAmounts() reads all the dollar values for each transaction
+ * and adds them together.
+ **********************************************************************/
+function fetchDollarAmounts() {
+    var dollarAmounts = [0];
+    var totalDollars;
+    transactionHistory.forEach(function (transactiion) {
+        dollarAmounts.push(transactiion[2]);
+    });
+    totalDollars = dollarAmounts.reduce(((accumulator, dollars) => accumulator + dollars));/*************array.reduce*****/
+    return totalDollars;
+}
+
+/**********************************************************************
+ * fetchStoreNamesAndIndex() returns a multi-dimensional array of 
+ * upperCase store names, created from the list of all transactions,
+ * and the index that that store name was taken from.
+ **********************************************************************/
+function fetchStoreNamesAndIndex() {
+    var storeNames = [];
+    transactionHistory.forEach(function(transaction){
+        storeNames.push([transaction[1].toLowerCase(), transactionHistory.indexOf(transaction)]);/******array.indexOf*****/
+    });
+    storeNames = storeNames.map(function(store){return [store[0].toUpperCase(), store[1]]});/***************array.map*****/
+    return storeNames;
+}
+
+/**********************************************************************
+ * userSearchTransactionByStore takes a string input, and compares it
+ * against 
+ **********************************************************************/
+function userSearchTransactionByStore(userInput){
+    userInput = userInput.toUpperCase();
+    var storeNamesAndIndex = fetchStoreNamesAndIndex();
+    var matchingTransactions = storeNamesAndIndex.filter(storeName => storeName[0] === userInput);
+    if (matchingTransactions.some(match => match[0] === userInput)){
+        console.log("The following transactions match your search criteria: ");
+        matchingTransactions.forEach(match => displaySpecificTransaction(match[1]));
+    } else {
+        console.log("No Transactions found with: " + userInput);
     }
 }
 
@@ -209,9 +252,13 @@ addNewTransaction(new Date(2017, 10, 31), "Car Insurance", 80);
 addNewTransaction(new Date(2017, 7, 27), "Tuition", 2000);
 addNewTransaction(new Date(2016, 8, 3), "School", 1800);
 addNewTransaction(new Date(2019, 7, 27), "Student Store", 20);
+addNewTransaction(new Date(2019, 7, 28), "Student Store", 15);
+addNewTransaction(new Date(2018, 4, 3), "Billy the Theif", 5000);
 //displaySpecificTransaction(0);
 
+console.log("SORTING ALL TRANSACTIONS BY DATE");
 transactionHistory.sort(sortByDate);
+console.log("DISPLAYING ALL TRANSACTIONS");
 displayAllTransactions(); console.log('\n');
 
 //transactionHistory.sort(sortByHighPrice);
@@ -219,14 +266,22 @@ displayAllTransactions(); console.log('\n');
 
 undoRecentTransactions(transactionHistory, 2);
 undoRecentTransactions(transactionHistory, 2);
+console.log("DISPLAYING RECENTLY DELETED TRANSACTIONS");
 displayAllTransactions(deletedTransactions); console.log('\n');
 
+console.log("RESTORING RECENTLY DELETED TRANSACTIONS");
 restoreRecentTransactions();
+console.log("DISPLAYING ALL TRANSACTIONS");
 displayAllTransactions(); console.log('\n');
 
+console.log("DETECTING ALL HIGH-COST TRANSACTIONS");
 detectFraudulentBehavior();
-displayAllTransactions(potentialFraud);
+console.log("DISPLAYING ALL POTENTIALLY FRAUDULENT TRANSACTIONS");
+displayAllTransactions(potentialFraud); console.log('\n');
 
+userSearchTransactionByStore("student store");
+userSearchTransactionByStore("pizza hut");
 console.log(isDateDataRealistic());
 console.log(hasShoppedAtThisStore("Walmart"));
 console.log(doesTransactionInclude(returnSpecificTransaction(0)));
+console.log('$' + fetchDollarAmounts());
