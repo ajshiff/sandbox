@@ -133,11 +133,15 @@ Hillion,1363900,Chizered,Westuming`;
     }
 ]
 */
+
 function convertData(data) {
     //ConvertedDataTemplate Correctly Displays the values of each field. 
     //It's been checked. Make sure the CVS Data follows the same pattern.
-    convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
-    convertedData = [];
+    //convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
+    //Data is packaged in this order: NameCity,Population,State,Country
+    var convertedData = data.reduce((acc, curr) => {console.log(curr);}, []);
+    console.log(convertedData);
+    return convertedData;
 }
 
 /******************************************************
@@ -203,8 +207,8 @@ function display(data) {
 function main() {
     var data = d3.csvParse(csvData);
     var convertedData = convertData(data);
-    var sortedData = sortData(convertedData);
-    display(sortedData);
+    //var sortedData = sortData(convertedData);
+   // display(sortedData);
 }
 
 main();

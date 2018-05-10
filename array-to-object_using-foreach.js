@@ -13,8 +13,7 @@ const before = [
     },
     {
         key: "msrp", value: "$184,900" //4
-    }
-]
+    }]
 console.log("BEFORE");console.log(before);console.log();
 
 /*START EDITS*/

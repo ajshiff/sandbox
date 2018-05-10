@@ -18,7 +18,8 @@ var potentialFraud = [];
  * Print months takes a number input between 0-11 and returns the month name in string.
  ***************************************************************/
 function printMonth(monthNumber){
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const months = ["January", "February", "March", "April", "May", "June",
+     "July", "August", "September", "October", "November", "December"];
     return months[monthNumber];
 }
 
@@ -27,7 +28,8 @@ function printMonth(monthNumber){
  * your transaction history
  ***************************************************************/
 function displayTransaction(date, store, price){
-    console.log("Date: " + date.getFullYear() + ' ' + printMonth(date.getMonth()) + ' ' + date.getDate() + " --- Store: " + store + " --- Price: " + price);
+    console.log("Date: " + date.getFullYear() + ' ' + printMonth(date.getMonth()) 
+    + ' ' + date.getDate() + " --- Store: " + store + " --- Price: " + price);
 }
 
 /***************************************************************

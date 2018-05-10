@@ -16,32 +16,19 @@ const before = [
     }
 ]
 console.log("BEFORE");console.log(before);console.log();
-
+var after;
 /*START EDITS*/
-var middle = before;
-
-var condenseObjects = function (arrayElement) {
+var condenseToObject = function (accumulator, arrayElement) {
     var key = arrayElement.key;
     var value = arrayElement.value;
-    var object = {};
-    object[key] = value;
-    return object;
+    accumulator[key] = value;
+    return accumulator;
 }
-
-var toNoMoreArray = function(acc, cur) {
-    acc += cur;
-    return acc;
-};
-
-middle.pop(); //Confident.
-middle = middle.map(condenseObjects);
-console.log("MIDDLE");console.log(middle);console.log();
-middle = middle.reduce(toNoMoreArray);
-
+after = before.filter(element => !(element.key === "msrp"));
+after = after.reduce(condenseToObject, {});
+//after = before.reduce(condenseToObject, {});
+//delete after['msrp'];
 /*END EDITS*/
-
-const after = middle;
-console.log("AFTER");console.log(after);console.log();
 
 var goal = {
     year: "2016",
@@ -49,5 +36,5 @@ var goal = {
     model: "911 R",
     color: "white"
 }
-
+console.log("AFTER");console.log(after);console.log();
 console.log("GOAL");console.log(goal);console.log();
