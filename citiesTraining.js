@@ -118,7 +118,7 @@ Hillion,1363900,Chizered,Westuming`;
  * This function should return an array containing the
  * converted data.
  ******************************************************/
-//Info comes in this order and format: Name,Population,State,Country\'n
+//Info comes in this order and format: Name,Population,State,Country\n
 //It should be in ---[{Name, States[{Name, Cities[{Name, Population}]}]}]---
 /*
 [
@@ -133,18 +133,17 @@ Hillion,1363900,Chizered,Westuming`;
     }
 ]
 */
-
+//ConvertedDataTemplate Correctly Displays the values of each field. //It's been checked. Make sure the CVS Data follows the same pattern.
+//convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
+//Data is packaged in this order: NameCity,Population,State,Country
 function convertData(data) {
-    //ConvertedDataTemplate Correctly Displays the values of each field. 
-    //It's been checked. Make sure the CVS Data follows the same pattern.
-    //convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
-    //Data is packaged in this order: NameCity,Population,State,Country
     var organizeData = function (cityInfo){
-        return {Name: cityInfo.Country, States:[{Name: cityInfo.State, Cities:[{Name: cityInfo.Name, Population: cityInfo.Population}]}]};
+        //return {Name: cityInfo.Country, States:[{Name: cityInfo.State, Cities:[{Name: cityInfo.Name, Population: cityInfo.Population}]}]};
+        
     }
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
     convertedData = convertedData.map(organizeData);
-    console.log(convertedData);
+    //console.log(convertedData);
     return convertedData;
 }
 
@@ -161,7 +160,24 @@ function convertData(data) {
  * This function should return an array containing the
  * sorted data.
  ******************************************************/
-function sortData(data) {}
+function sortData(data) {
+    var sortedData = data;
+    var reorderData = function(place1, place2) {
+        if (place1.Name === place2.Name) {
+            if(place1[0].States === place2[0].States) {
+                if (true) {}
+                else if (true) {}
+                else {}
+            }
+            else if(place1.Name > place2.Name) {return 1;}
+            else {return -1}
+        } 
+        else if (place1.Name > place2.Name) {return 1;}
+        else {return -1;}
+    }
+    sortedData.sort(reorderData);
+    return sortedData;
+}
 
 /******************************************************
  *                      Display
@@ -213,6 +229,7 @@ function main() {
     var convertedData = convertData(data);
     //var sortedData = sortData(convertedData);
    // display(sortedData);
+    display(convertedData);
 }
 
 main();
