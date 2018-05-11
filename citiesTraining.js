@@ -137,13 +137,27 @@ Hillion,1363900,Chizered,Westuming`;
 //convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
 //Data is packaged in this order: NameCity,Population,State,Country
 function convertData(data) {
-    var organizeData = function (cityInfo){
-        //return {Name: cityInfo.Country, States:[{Name: cityInfo.State, Cities:[{Name: cityInfo.Name, Population: cityInfo.Population}]}]};
-        
-    }
+    var organizeData = function (acc, cityInfo, index){
+        var countryName = cityInfo.Country;
+        var stateName = cityInfo.State;
+        var cityName = cityInfo.Name;
+        var population = cityInfo.population;
+        if (acc){
+            if(acc.some(country => country === contryName)){
+                var countryIndex = acc.find(country => country ===  countryName);
+                if(acc[countryIndex].some(state => state === stateName)){
+                    var stateIndex = acc.find(state => state ===  stateName);
+                } else {
+                    acc[countryIndex].concat({States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
+                }
+            } else {
+                acc.concat({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
+            }
+        }
+}
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
-    convertedData = convertedData.map(organizeData);
-    //console.log(convertedData);
+    convertedData = convertedData.reduce(organizeData, []);
+    console.log(convertedData);
     return convertedData;
 }
 
@@ -228,8 +242,8 @@ function main() {
     var data = d3.csvParse(csvData);
     var convertedData = convertData(data);
     //var sortedData = sortData(convertedData);
-   // display(sortedData);
-    display(convertedData);
+    //display(sortedData);
+    //display(convertedData);
 }
 
 main();
