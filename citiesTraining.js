@@ -163,7 +163,7 @@ function convertData(data) {
             acc.push({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
             return acc;
         }
-}
+    }
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
     convertedData = convertedData.reduce(organizeData, []);
     return convertedData;
