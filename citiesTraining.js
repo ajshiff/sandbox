@@ -146,9 +146,9 @@ function convertData(data) {
         var cityName = cityInfo.Name;
         var population = cityInfo.Population;
         if(acc.some(country => country.Name === countryName)){
-            var countryIndex = acc.findIndex(country => country.Name === countryName);
+            var countryIndex = acc.findIndex(country => country.Name === countryName);//////////////////////////////////
             if (acc[countryIndex].States.some(state => state.Name === stateName)) {
-                var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);
+                var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);/////////////////
                 if (acc[countryIndex].States[stateIndex].Cities.some(city => city.Name === cityName)) {
                     return acc;
                 } else {
@@ -186,7 +186,9 @@ function sortData(data) {
     var sortedData = data;
     var reorderData = function(place1, place2) {
         if (place1.Name === place2.Name) {
-            if(place1[0].States === place2[0].States) {
+            var countryIndex = place1.findIndex(country => country.Name === countryName);
+            if(true) {
+                var stateIndex = null;
                 if (true) {}
                 else if (true) {}
                 else {}
