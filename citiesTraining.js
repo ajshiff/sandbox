@@ -138,6 +138,7 @@ const csvData = fs.readFileSync('./countries.csv', 'utf-8');
 //ConvertedDataTemplate Correctly Displays the values of each field. //It's been checked. Make sure the CVS Data follows the same pattern.
 //convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
 //Data is packaged in this order: NameCity,Population,State,Country
+//console.log(util.inspect(convertedData, {showHidden: false, depth: null}));
 function convertData(data) {
     var organizeData = function (acc, cityInfo, index){
         var countryName = cityInfo.Country;
@@ -145,35 +146,26 @@ function convertData(data) {
         var cityName = cityInfo.Name;
         var population = cityInfo.Population;
         if(acc.some(country => country.Name === countryName)){
-            console.log(index + " Country Already Exists");
             var countryIndex = acc.findIndex(country => country.Name === countryName);
             if (acc[countryIndex].States.some(state => state.Name === stateName)) {
-                console.log(index + " State Already Exists");
                 var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);
                 if (acc[countryIndex].States[stateIndex].Cities.some(city => city.Name === cityName)) {
-                    console.log(index + " City Already Exists");
                     return acc;
                 } else {
-                    console.log(index + " Creating New City");
                     acc[countryIndex].States[stateIndex].Cities.push({Name: cityName, Population: population});
                     return acc;
                 }
             } else {
-                console.log(index + " Creating New State");
                 acc[countryIndex].States.push({Name: stateName, Cities:[{Name: cityName, Population: population}]});
                 return acc;
             }
         } else {
-            console.log(index + " Creating New Country");
             acc.push({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
-            //console.log(acc[0].Name);
             return acc;
         }
 }
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
     convertedData = convertedData.reduce(organizeData, []);
-    //console.log(util.inspect(convertedData, {showHidden: false, depth: 4}));
-    //console.log(convertedData);
     return convertedData;
 }
 
