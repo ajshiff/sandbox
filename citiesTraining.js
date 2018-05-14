@@ -1,5 +1,7 @@
 /* Do not touch lines 2 - ~103 */
 const d3 = require('d3-dsv');
+const util = require('util');
+const fs = require('fs');
 var csvData = `Name,Population,State,Country
 Jenkers,1994123,Stelkhs,Wheley
 Feigerry,1950774,Derlbowl,Ligeandictoria
@@ -101,7 +103,7 @@ Honoterms,1242464,Phusurally,Ligeandictoria
 Atortly,380470,Precing,Imatentingles
 Rhoparlabil,403042,Recognizings,Recontinkeying
 Hillion,1363900,Chizered,Westuming`;
-
+//const csvData = fs.readFileSync('./countries.csv', 'utf-8');
 /******************************************************
  *                   convertData
  * 
@@ -141,23 +143,22 @@ function convertData(data) {
         var countryName = cityInfo.Country;
         var stateName = cityInfo.State;
         var cityName = cityInfo.Name;
-        var population = cityInfo.population;
-        if (acc){
-            if(acc.some(country => country === contryName)){
-                var countryIndex = acc.find(country => country ===  countryName);
-                if(acc[countryIndex].some(state => state === stateName)){
-                    var stateIndex = acc.find(state => state ===  stateName);
-                } else {
-                    acc[countryIndex].concat({States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
-                }
-            } else {
-                acc.concat({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
-            }
+        var population = cityInfo.Population;
+        if(acc.some(country => country.Name === countryName)){
+            console.log(index + " Country Already Exists");
+            var countryIndex = acc.findIndex(country => country.Name === countryName);
+            console.log(countryIndex);
+            return acc;
+        } else {
+            console.log(index + " Creating New Country");
+            acc.push({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
+            //console.log(acc[0].Name);
+            return acc;
         }
 }
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
     convertedData = convertedData.reduce(organizeData, []);
-    console.log(convertedData);
+    console.log(util.inspect(convertedData, {showHidden: false, depth: null}));
     return convertedData;
 }
 
