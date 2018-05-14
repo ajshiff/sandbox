@@ -2,7 +2,7 @@
 const d3 = require('d3-dsv');
 const util = require('util');
 const fs = require('fs');
-var csvData = `Name,Population,State,Country
+/*var csvData = `Name,Population,State,Country
 Jenkers,1994123,Stelkhs,Wheley
 Feigerry,1950774,Derlbowl,Ligeandictoria
 Emincigass,1792805,Chantated,Ligeandictoria
@@ -102,8 +102,8 @@ Hairess,890704,Lumetend,Wheley
 Honoterms,1242464,Phusurally,Ligeandictoria
 Atortly,380470,Precing,Imatentingles
 Rhoparlabil,403042,Recognizings,Recontinkeying
-Hillion,1363900,Chizered,Westuming`;
-//const csvData = fs.readFileSync('./countries.csv', 'utf-8');
+Hillion,1363900,Chizered,Westuming`;*/
+const csvData = fs.readFileSync('./countries.csv', 'utf-8');
 /******************************************************
  *                   convertData
  * 
@@ -147,8 +147,22 @@ function convertData(data) {
         if(acc.some(country => country.Name === countryName)){
             console.log(index + " Country Already Exists");
             var countryIndex = acc.findIndex(country => country.Name === countryName);
-            console.log(countryIndex);
-            return acc;
+            if (acc[countryIndex].States.some(state => state.Name === stateName)) {
+                console.log(index + " State Already Exists");
+                var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);
+                if (acc[countryIndex].States[stateIndex].Cities.some(city => city.Name === cityName)) {
+                    console.log(index + " City Already Exists");
+                    return acc;
+                } else {
+                    console.log(index + " Creating New City");
+                    acc[countryIndex].States[stateIndex].Cities.push({Name: cityName, Population: population});
+                    return acc;
+                }
+            } else {
+                console.log(index + " Creating New State");
+                acc[countryIndex].States.push({Name: stateName, Cities:[{Name: cityName, Population: population}]});
+                return acc;
+            }
         } else {
             console.log(index + " Creating New Country");
             acc.push({Name: countryName, States:[{Name: stateName, Cities:[{Name: cityName, Population: population}]}]});
@@ -158,7 +172,8 @@ function convertData(data) {
 }
     var convertedData = data.reduce((acc, curr) => acc.concat(curr), []);
     convertedData = convertedData.reduce(organizeData, []);
-    console.log(util.inspect(convertedData, {showHidden: false, depth: null}));
+    //console.log(util.inspect(convertedData, {showHidden: false, depth: 4}));
+    //console.log(convertedData);
     return convertedData;
 }
 
@@ -244,7 +259,7 @@ function main() {
     var convertedData = convertData(data);
     //var sortedData = sortData(convertedData);
     //display(sortedData);
-    //display(convertedData);
+    display(convertedData);
 }
 
 main();
