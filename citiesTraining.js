@@ -185,13 +185,19 @@ function convertData(data) {
 function sortData(data) {
     var sortedData = data;
     var reorderData = function(place1, place2) {
-        if (place1.Name === place2.Name) {return 0;} 
+        if (place1.Name === place2.Name) {return 0;}
         else if (place1.Name > place2.Name) {return 1;}
+        else {return -1;}
+    }
+    var reorderByPopulation = function(place1, place2) {
+        if (place1.Population === place2.Population) {return 0;}
+        else if (place1.Population > place2.Population) {return 1;}
         else {return -1;}
     }
     sortedData.sort(reorderData);
     sortedData.forEach(country => country.States.sort(reorderData));
-    //sortedData.States.forEach(state => state.Cities.sort(reorderData));
+    //sortedData.forEach(country => country.States.forEach(state => state.Cities.sort(reorderData)));
+    sortedData.forEach(country => country.States.forEach(state => state.Cities.sort(reorderByPopulation)));
     return sortedData;
 }
 
