@@ -104,6 +104,7 @@ Atortly,380470,Precing,Imatentingles
 Rhoparlabil,403042,Recognizings,Recontinkeying
 Hillion,1363900,Chizered,Westuming`;*/
 const csvData = fs.readFileSync('./countries.csv', 'utf-8');
+
 /******************************************************
  *                   convertData
  * 
@@ -120,25 +121,6 @@ const csvData = fs.readFileSync('./countries.csv', 'utf-8');
  * This function should return an array containing the
  * converted data.
  ******************************************************/
-//Info comes in this order and format: Name,Population,State,Country\n
-//It should be in ---[{Name, States[{Name, Cities[{Name, Population}]}]}]---
-/*
-[
-    {Name: "", States:
-        [
-            {Name: "", Cities:
-                [
-                    {Name: "", Population: #######}
-                ]
-            }
-        ]
-    }
-]
-*/
-//ConvertedDataTemplate Correctly Displays the values of each field. //It's been checked. Make sure the CVS Data follows the same pattern.
-//convertedDataTemplate = [{Name: "NameOfCountry", States:[{Name: "NameOfState", Cities:[{Name: "NameOfCity", Population: 987650}]}]}];
-//Data is packaged in this order: NameCity,Population,State,Country
-//console.log(util.inspect(convertedData, {showHidden: false, depth: null}));
 function convertData(data) {
     var organizeData = function (acc, cityInfo, index){
         var countryName = cityInfo.Country;
@@ -146,9 +128,9 @@ function convertData(data) {
         var cityName = cityInfo.Name;
         var population = cityInfo.Population;
         if(acc.some(country => country.Name === countryName)){
-            var countryIndex = acc.findIndex(country => country.Name === countryName);//////////////////////////////////
+            var countryIndex = acc.findIndex(country => country.Name === countryName);
             if (acc[countryIndex].States.some(state => state.Name === stateName)) {
-                var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);/////////////////
+                var stateIndex = acc[countryIndex].States.findIndex(state => state.Name === stateName);
                 if (acc[countryIndex].States[stateIndex].Cities.some(city => city.Name === cityName)) {
                     return acc;
                 } else {
@@ -190,14 +172,13 @@ function sortData(data) {
         else {return -1;}
     }
     var reorderByPopulation = function(place1, place2) {
+        console.log("P1: " + place1.Population + " --- P2: " + place2.Population);
         if (place1.Population === place2.Population) {return 0;}
-        else if (place1.Population > place2.Population) {return 1;}
-        else {return -1;}
+        else {return place1.Population - place2.Population}
     }
     sortedData.sort(reorderData);
     sortedData.forEach(country => country.States.sort(reorderData));
-    //sortedData.forEach(country => country.States.forEach(state => state.Cities.sort(reorderData)));
-    sortedData.forEach(country => country.States.forEach(state => state.Cities.sort(reorderByPopulation)));
+    sortedData.forEach(country => country.States.forEach(state => state.Cities.sort(reorderByPopulation/*reorderData*/)));
     return sortedData;
 }
 
