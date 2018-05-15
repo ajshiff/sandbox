@@ -185,23 +185,16 @@ function convertData(data) {
 function sortData(data) {
     var sortedData = data;
     var reorderData = function(place1, place2) {
-        if (place1.Name === place2.Name) {
-            var countryIndex = place1.findIndex(country => country.Name === countryName);
-            if(true) {
-                var stateIndex = null;
-                if (true) {}
-                else if (true) {}
-                else {}
-            }
-            else if(place1.Name > place2.Name) {return 1;}
-            else {return -1}
-        } 
+        if (place1.Name === place2.Name) {return 0;} 
         else if (place1.Name > place2.Name) {return 1;}
         else {return -1;}
     }
     sortedData.sort(reorderData);
+    sortedData.forEach(country => country.States.sort(reorderData));
+    //sortedData.States.forEach(state => state.Cities.sort(reorderData));
     return sortedData;
 }
+
 
 /******************************************************
  *                      Display
@@ -251,9 +244,9 @@ function display(data) {
 function main() {
     var data = d3.csvParse(csvData);
     var convertedData = convertData(data);
-    //var sortedData = sortData(convertedData);
-    //display(sortedData);
-    display(convertedData);
+    var sortedData = sortData(convertedData);
+    display(sortedData);
+    //display(convertedData);
 }
 
 main();
