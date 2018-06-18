@@ -17,7 +17,7 @@ function getRecentNodeVersion(callback) {
         //where does this string go?
         return 'more words';
     });
-
+    console.log(callback); // <--- callback is executed here (and line 63 as weirdFunctionReturn)
     console.log(3);
 
     //it is weird for the "node-pattern of handling async problems" to return something (don't do this) 
@@ -42,7 +42,8 @@ function start() {
     var text, number;
 
     console.log(1);
-    text = getRecentNodeVersion(function (err, nodeVersion) {
+    var weirdFunctionReturn; //If you wanted to store the value of the executed function instead of calling the callback
+    text = getRecentNodeVersion(weirdFunctionReturn = function (err, nodeVersion) {
         console.log(13);
 
         if (err) {
@@ -56,8 +57,10 @@ function start() {
 
         //this return is also weird, just want you to think about it
         return 'this is weird';
-    });
-
+    }()); // Need () at the end of the callback so the anonymous function is self-executing to give 
+    // the return value to the variable on line 45/46. This is silly/weird because it disables the purpose 
+    // of the callback, and causes errors when tring to 
+    console.log(weirdFunctionReturn); // <--- weirdFunctionReturn is executed here (and line 20 as callback)
     var example = function (err, sum) {
         if (err) {
             console.log(err);
