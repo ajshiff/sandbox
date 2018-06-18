@@ -7,7 +7,7 @@ function getRecentNodeVersion(callback) {
         if (err) {
             callback(err);
             // if this returned a value where would it go?
-            return
+            return;
         }
         //this is weird for a callback to return a value, just think about it
         var words = callback(null, nodeVersions[0].version);
@@ -15,7 +15,7 @@ function getRecentNodeVersion(callback) {
         console.log(15);
 
         //where does this string go?
-        return "more words";
+        return 'more words';
     });
 
     console.log(3);
@@ -23,7 +23,7 @@ function getRecentNodeVersion(callback) {
     //it is weird for the "node-pattern of handling async problems" to return something (don't do this) 
     //but I want you to think about this to fully understand async flow of execution
     //and to understand the difference between an async function and a callback
-    return "return";
+    return 'return';
 }
 
 function addNumbers(a, b, callback) {
@@ -41,7 +41,7 @@ function addNumbers(a, b, callback) {
 function start() {
     var text, number;
 
-    console.log(1)
+    console.log(1);
     text = getRecentNodeVersion(function (err, nodeVersion) {
         console.log(13);
 
@@ -51,12 +51,12 @@ function start() {
             return;
         }
 
-        console.log("Current Node Version:", nodeVersion);
+        console.log('Current Node Version:', nodeVersion);
         console.log(14);
 
         //this return is also weird, just want you to think about it
-        return "this is weird";
-    })
+        return 'this is weird';
+    });
 
     console.log(4);
     number = addNumbers(2, 3, function (err, sum) {
@@ -68,7 +68,7 @@ function start() {
         console.log(6);
         console.log(sum);
         //this return is also weird, just want you to think about it
-        return "not a number";
+        return 'not a number';
     });
 
     console.log(8);
