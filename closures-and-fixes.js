@@ -19,9 +19,9 @@ for (let c = 0; c < arr.length; c++) {
 
 // Closure Fix using closures by generating a function with that variable instance and an IFFE
 for (var d = 0; d < arr.length; d++) {
-    setTimeout((function (d) {
+    setTimeout((function (x) {
         return function () {
-            console.log(`The index is: ${d}. The value is: ${arr[d]}`);
+            console.log(`The index is: ${x}. The value is: ${arr[x]}`);
         };
     })(d), 0);
 }
