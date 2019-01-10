@@ -1,0 +1,16 @@
+// tsconfig settings cascade 
+{
+    "compilerOptions": {
+        "target": "es6",
+        "noUnusedLocals": false,
+        "noImplicitAny": false,
+        "outFile": "prod.js",
+        "sourceMap": true, 
+        "watch": true, // Automatically compiles ts scripts on save
+        "outDir": "prodjs", // The file to output the compiled js files to
+    },
+    "files": [ // List of files to compile when running the compiler
+        "./sandbox.ts", // specific files can be chosen
+        "./**/*.ts",     // the ./**/ references says to look recursively through all subdirectories, and the *.ts says to find all the files ending in .ts
+    ],
+}
